@@ -87,6 +87,10 @@ function tambah(){
     $('#txtid').val('');
     $('#txtnamacabang').val('');
     $("#jqGrid").jqGrid("resetSelection");
+    $('#btnubah').attr('disabled','disabled');
+    $('#btnhapus').attr('disabled','disabled');
+
+    
     start='save';
 }
 
@@ -144,36 +148,45 @@ function do_save(){
 }
 
 function ubah(){
-    $('#modaldetailcabang').modal('show');
-    start='update';
+    var txtid = $('#txtid').val(); 
+    if(txtid!=""){
+        $('#modaldetailcabang').modal('show');
+        start='update';
+    }else{
+        alert('data belum dipilih');
+    }
 }
 
 function hapus(){
     var txtnamacabang = $('#txtnamacabang').val(); 
     var txtid = $('#txtid').val(); 
 
-    var r = confirm("Hapus data "+txtnamacabang);
-    if (r == true) {
-        var postvars = {txtid:txtid};
-        $.ajax({ 
-            type: 'POST', 
-            url: base_url+'mastercabang/delete', 
-            data: postvars,  
-            statusCode: {
-              200: function (response) {
-                 //jika sukses
-                 if(response=="OK"){
-                    fetchGridData();
-                 }
-              },
-              500: function (response) {
-                 //internal server error
-                 alert('Terjadi Kesalahan, coba lagi.');
-                 
-              }
-           },
-        });
-    } 
+    if(txtid!=""){
 
+        var r = confirm("Hapus data "+txtnamacabang);
+        if (r == true) {
+            var postvars = {txtid:txtid};
+            $.ajax({ 
+                type: 'POST', 
+                url: base_url+'mastercabang/delete', 
+                data: postvars,  
+                statusCode: {
+                  200: function (response) {
+                     //jika sukses
+                     if(response=="OK"){
+                        fetchGridData();
+                     }
+                  },
+                  500: function (response) {
+                     //internal server error
+                     alert('Terjadi Kesalahan, coba lagi.');
+                     
+                  }
+               },
+            });
+        } 
+    }else{
+        alert('data belum dipilih')
+    }
 }
 
