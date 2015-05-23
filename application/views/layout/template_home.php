@@ -17,9 +17,20 @@
     <!-- Custom styles for this template -->
     <link href="<?php echo config_item('assets');?>css/navbar.css" rel="stylesheet">
 
+    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo config_item('assets');?>css/jquery-ui.css" />
+    <!-- The link to the CSS that the grid needs -->
+    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url();?>ektension/css/ui.jqgrid.css" />
+
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="<?php echo config_item('assets');?>js/ie-emulation-modes-warning.js"></script>
+
+    <script src="<?php echo config_item('assets');?>js/jquery-1.11.3.min.js"></script>
+
+     <!-- We support more than 40 localizations -->
+    <script type="text/ecmascript" src="<?php echo base_url();?>ektension/js/i18n/grid.locale-en.js"></script>
+    <!-- This is the Javascript file of jqGrid -->   
+    <script type="text/ecmascript" src="<?php echo base_url();?>ektension/js/jquery.jqGrid.min.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -52,8 +63,8 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Master <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Master Stok</a></li>
-                  <li><a href="#">Master Cabang</a></li>
+                  <li><a href="<?php echo base_url(); ?>masterbarang">Master Barang</a></li>
+                  <li><a href="<?php echo base_url(); ?>mastercabang">Master Cabang</a></li>
                 </ul>
               </li>
 
@@ -92,8 +103,9 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="<?php echo config_item('assets');?>js/jquery-1.11.3.min.js"></script>
+    
     <script src="<?php echo config_item('assets');?>js/bootstrap.min.js"></script>
+   
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<?php echo config_item('assets');?>js/ie10-viewport-bug-workaround.js"></script>
   </body>
