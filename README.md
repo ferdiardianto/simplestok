@@ -1,0 +1,2 @@
+# simplestok
+aplikasi stok sederhana
