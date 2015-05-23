@@ -38,7 +38,10 @@ $(document).ready(function () {
         refresh: true
     });
 
-    
+    // the bindKeys() 
+    $("#jqGrid").jqGrid('bindKeys');
+
+
     fetchGridData();
 
 });
