@@ -236,6 +236,8 @@ function hapus(){
 
 function gridchange(value){
     fetchGridData(value);
+      $('#btnubah').attr('disabled','disabled');
+    $('#btnhapus').attr('disabled','disabled');
 }
 
 $(function(){
