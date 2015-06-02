@@ -71,8 +71,8 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Transaksi <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Barang Masuk</a></li>
-                  <li><a href="#">Barang Keluar</a></li>
+                  <li><a href="<?php echo base_url() ?>barangmasuk">Barang Masuk</a></li>
+                  <li><a href="<?php echo base_url() ?>barangkeluar">Barang Keluar</a></li>
                 </ul>
               </li>
 

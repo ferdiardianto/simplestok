@@ -14,11 +14,13 @@ $(document).ready(function () {
 
     $("#jqGrid").jqGrid({
         colModel: [
-            { label: 'Kode Barang', name: 'id', key: true, width: 100 },
+            { label: 'autoincremen', name: 'autoincremen', key: true, width: 100, hidden:true },
+            { label: 'Kode Barang', name: 'id', width: 100 },
             { label: 'Nama Barang', name: 'nama_barang', width: 430 },
             { label: 'Jumlah', name: 'quantity', width: 150 },
             { label: 'Berat (Gram)', name: 'berat', width: 150 },
-            { label: 'Harga', name: 'harga', width: 300 },
+            { label: 'Harga', name: 'harga', width: 300, hidden:true},
+            { label: 'Tanggal', name: 'tanggal', width: 300 },
             { label: 'Cabang', name: 'cabang', width: 1100, hidden:true },
             { label: 'Flag', name: 'flag', width: 1100, hidden:true }
         ],
@@ -28,7 +30,7 @@ $(document).ready(function () {
         rowNum: 20,
         datatype: 'local',
         pager: "#jqGridPager",
-        caption: "List Data Master Barang",
+        caption: "List Data Barang Masuk",
         onSelectRow: function(rowId){
             setfield(rowId);
             $('#btnubah').removeAttr('disabled');
@@ -60,7 +62,7 @@ $(document).ready(function () {
     // show loading message
     $("#jqGrid")[0].grid.beginReq();
     $.ajax({
-        url: base_url+'masterbarang/getall',
+        url: base_url+'barangmasuk/getall',
         data: postvar,
         success: function (result) {
             if(result != null){
@@ -90,6 +92,7 @@ function setfield(rowId){
     var harga = rowData['harga'];
     var cabang = rowData['cabang'];
     var flag = rowData['flag'];
+    var autoincremen = rowData['autoincremen'];
 
     clearfield();
     if(flag==2){
@@ -112,6 +115,7 @@ function setfield(rowId){
     $('#txtkdbarang').val(id);
     $('#txtnamabarang').val(nama_barang);
     $('#txtharga').val(harga);
+    $('#txtautoincremen').val(autoincremen);
  
 }
 
@@ -138,13 +142,14 @@ function do_save(){
     var txtberat = $('#txtberat').val();
     var txtharga = $('#txtharga').val(); 
     var cmbcabang = $('#cmbcabang').val(); 
+    var txtautoincremen = $('#txtautoincremen').val(); 
 
     if(txtkdbarang!=""){
-        var postvars = {txtkdbarang:txtkdbarang,txtnamabarang:txtnamabarang,flag:flag,txtjumlah:txtjumlah,txtberat:txtberat,txtharga:txtharga,cmbcabang:cmbcabang};
+        var postvars = {txtkdbarang:txtkdbarang,txtnamabarang:txtnamabarang,flag:flag,txtjumlah:txtjumlah,txtberat:txtberat,txtharga:txtharga,cmbcabang:cmbcabang,txtautoincremen:txtautoincremen};
         if(start=='save'){
             $.ajax({ 
                 type: 'POST', 
-                url: base_url+'masterbarang/save', 
+                url: base_url+'barangmasuk/save', 
                 data: postvars,  
                 statusCode: {
                   200: function (response) {
@@ -166,7 +171,7 @@ function do_save(){
         }else if(start='update'){
             $.ajax({ 
                 type: 'POST', 
-                url: base_url+'masterbarang/update', 
+                url: base_url+'barangmasuk/update', 
                 data: postvars,  
                 statusCode: {
                   200: function (response) {
@@ -204,15 +209,19 @@ function ubah(){
 function hapus(){
     var txtnamabarang = $('#txtnamabarang').val(); 
     var txtkdbarang = $('#txtkdbarang').val(); 
+    var txtautoincremen = $('#txtautoincremen').val(); 
     var cmbcabang = $('#cmbcabang').val(); 
+    var flag = $('input[name="optionsRadios"]:checked').val();
+    var txtberat = $('#txtberat').val(); 
+    var txtjumlah = $('#txtjumlah').val(); 
     if(txtkdbarang!=""){
 
         var r = confirm("Hapus data "+txtnamabarang);
         if (r == true) {
-            var postvars = {txtkdbarang:txtkdbarang,cmbcabang:cmbcabang};
+            var postvars = {txtautoincremen:txtautoincremen,cmbcabang:cmbcabang,flag:flag,txtkdbarang:txtkdbarang,txtberat:txtberat,txtjumlah:txtjumlah};
             $.ajax({ 
                 type: 'POST', 
-                url: base_url+'masterbarang/delete', 
+                url: base_url+'barangmasuk/delete', 
                 data: postvars,  
                 statusCode: {
                   200: function (response) {
@@ -244,6 +253,9 @@ $(function(){
   $('input[type="radio"]').click(function(){
     if ($(this).is(':checked'))
     {
+        alert('Dilarang mengganti bagian ini, jika ingin merubah, rubahlah dibagian Master Barang');
+         $('#modaldetailcabang').modal('hide');
+        /*
         var value = $(this).val();
         
         if(value=='2'){
@@ -255,6 +267,7 @@ $(function(){
             $('#fieldberat').hide();
             $('#txtberat').val('');
         }
+        */
     }
   });
 });
@@ -378,6 +391,7 @@ function clearfield(){
   $('#txtberat').val('');
   $('#txtharga').val('');
   $('#txtberatkg').val('');
+  $('#txtautoincremen').val('');
 
   //radio buttn clear
   $('input[type="radio"]').attr('checked',false)
@@ -395,4 +409,47 @@ function konversigtokg(){
   var hasil = g/1000;
 
   $('#txtberatkg').val(hasil);
+}
+
+function caribarang(value){
+  var barang = [];
+  var postvars = {txtkdbarang:value};
+  $.ajax({ 
+      type: 'POST', 
+      url: base_url+'barangmasuk/findbarang', 
+      data: postvars,  
+      dataType: "json",
+      statusCode: {
+        200: function (response) {
+          if(response != null){
+            $.each(response, function (key, value) {
+                $('#txtharga').val(value.harga);
+                $('#txtnamabarang').val(value.nama_barang);
+
+                $('#txtjumlah').val('');
+                $('#txtberat').val('');
+                $('#txtberatkg').val('');
+
+                if(value.flag==2){ 
+                  $('input[name="optionsRadios"][value=2]').click();
+                  $('#fieldjumlah').hide();
+                  $('#fieldberat').show();
+                }else if (value.flag==1){
+                   $('input[name="optionsRadios"][value=1]').click();
+                   $('#fieldjumlah').show();
+                   $('#fieldberat').hide();
+                }
+
+
+
+            });
+          }
+        },
+        500: function (response) {
+           //internal server error
+           alert('Terjadi Kesalahan, coba lagi.');
+           
+        }
+     },
+  });
 }

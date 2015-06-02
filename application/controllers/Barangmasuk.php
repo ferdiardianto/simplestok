@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Masterbarang extends CI_Controller {
+class Barangmasuk extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -26,7 +26,7 @@ class Masterbarang extends CI_Controller {
         $this->load->helper('url');
         $this->load->helper('rev');
 		$this->load->library('session');
-		$this->load->model('masterbarang_m');
+		$this->load->model('barangmasuk_m');
     }
 
 	public function index()
@@ -38,9 +38,10 @@ class Masterbarang extends CI_Controller {
 			redirect('/login/', 'refresh');
 		}else{
 
-			$xdata['list_cabang']= $this->masterbarang_m->getcabang();
+			$xdata['list_cabang']= $this->barangmasuk_m->getcabang();
+			$xdata['list_barang']= $this->barangmasuk_m->getbarang();
 			//sisa stok ketika 
-			$data['content']=$this->load->view('content/masterbarang',$xdata,TRUE);			
+			$data['content']=$this->load->view('content/barangmasuk',$xdata,TRUE);			
 
 			$this->load->view('layout/template_home',$data);
 		}
@@ -49,7 +50,7 @@ class Masterbarang extends CI_Controller {
 	
 	function getall(){
 		$cabang= $this->input->get('cabang');
-		$data = $this->masterbarang_m->getall($cabang);
+		$data = $this->barangmasuk_m->getall($cabang);
 
 		echo json_encode($data);
 	}
@@ -66,7 +67,7 @@ class Masterbarang extends CI_Controller {
 		$cmbcabang= $this->input->post('cmbcabang');
 
 		if(isset($txtkdbarang)){
-			$data = $this->masterbarang_m->save($txtkdbarang,$txtnamabarang,$flag,$txtjumlah,$txtberat,$txtharga,$cmbcabang);
+			$data = $this->barangmasuk_m->save($txtkdbarang,$txtnamabarang,$flag,$txtjumlah,$txtberat,$txtharga,$cmbcabang);
 			if($data){
 				echo "OK";
 			}else{
@@ -86,9 +87,10 @@ class Masterbarang extends CI_Controller {
 		$txtberat= clearcoma($this->input->post('txtberat'));
 		$txtharga= clearcoma($this->input->post('txtharga'));
 		$cmbcabang= $this->input->post('cmbcabang');
+		$txtautoincremen= $this->input->post('txtautoincremen');
 
 		if(isset($txtkdbarang) && isset($cmbcabang)){
-			$data = $this->masterbarang_m->update($txtkdbarang,$txtnamabarang,$flag,$txtjumlah,$txtberat,$txtharga,$cmbcabang);
+			$data = $this->barangmasuk_m->update($txtkdbarang,$txtnamabarang,$flag,$txtjumlah,$txtberat,$txtharga,$cmbcabang,$txtautoincremen);
 			if($data){
 				echo "OK";
 			}else{
@@ -101,12 +103,30 @@ class Masterbarang extends CI_Controller {
 	}
 
 	function delete(){
-		$txtkdbarang= $this->input->post('txtkdbarang');
+		$txtautoincremen= $this->input->post('txtautoincremen');
 		$cmbcabang= $this->input->post('cmbcabang');
-		if(isset($txtkdbarang)){
-			$data = $this->masterbarang_m->delete($txtkdbarang,$cmbcabang);
+		$flag= $this->input->post('flag');
+		$txtkdbarang= $this->input->post('txtkdbarang');
+		$txtberat= $this->input->post('txtberat');
+		$txtjumlah= $this->input->post('txtjumlah');
+		if(isset($txtautoincremen)){
+			$data = $this->barangmasuk_m->delete($txtautoincremen,$cmbcabang,$flag,$txtkdbarang,$txtberat,$txtjumlah);
 			if($data){
 				echo "OK";
+			}else{
+				echo "FAILED";
+			}
+		}else{
+			echo "UNCOMPLETED";
+		}
+	}
+
+	function findbarang(){
+		$txtkdbarang= $this->input->post('txtkdbarang');
+		if(isset($txtkdbarang)){
+			$data = $this->barangmasuk_m->findbarang($txtkdbarang);
+			if($data){
+				echo json_encode($data);
 			}else{
 				echo "FAILED";
 			}

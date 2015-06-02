@@ -73,9 +73,10 @@
 		}
 
 
-		function delete($txtkdbarang){
+		function delete($txtkdbarang,$cmbcabang){
 			$arrInput = array(
-				"id" => $txtkdbarang
+				"id" => $txtkdbarang,
+				"cabang" => $cmbcabang
 			);
 			$ar = $this->db->delete('databarang',$arrInput);
 			if($ar){
