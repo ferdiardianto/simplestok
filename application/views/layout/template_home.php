@@ -26,7 +26,7 @@
     <script src="<?php echo config_item('assets');?>js/ie-emulation-modes-warning.js"></script>
 
     <script src="<?php echo config_item('assets');?>js/jquery-1.11.3.min.js"></script>
-
+    
      <!-- We support more than 40 localizations -->
     <script type="text/ecmascript" src="<?php echo base_url();?>ektension/js/i18n/grid.locale-en.js"></script>
     <!-- This is the Javascript file of jqGrid -->   
@@ -79,7 +79,7 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">History <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Laporan</a></li>
+                  <li><a href="<?php echo base_url() ?>laporan">Laporan</a></li>
                 </ul>
               </li>
 
@@ -108,5 +108,7 @@
    
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<?php echo config_item('assets');?>js/ie10-viewport-bug-workaround.js"></script>
+  
+
   </body>
 </html>
